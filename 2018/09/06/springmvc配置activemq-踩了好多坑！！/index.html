@@ -5,16 +5,20 @@
   
 
   
-  <title>我的博客</title>
+  <title>springmvc配置activemq,完成对象传递DEMO(踩了好多坑！！) | 我的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="分享经验">
-<meta property="og:type" content="website">
-<meta property="og:title" content="我的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="本机环境Win10Spring 4.3.12ActiveMQ 5.15.5   ActiveMQ安装http://activemq.apache.org/    下载对应文件解压后执行对应操作系统的activemq.bat   打开浏览器进入 http://localhost:8161/admin/ 看到内容就说明ActiveMQ服务已启动 (用户名&amp;amp;密码默认为admin）  spring">
+<meta name="keywords" content="Coding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springmvc配置activemq,完成对象传递DEMO(踩了好多坑！！)">
+<meta property="og:url" content="http://yoursite.com/2018/09/06/springmvc配置activemq-踩了好多坑！！/index.html">
 <meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="本机环境Win10Spring 4.3.12ActiveMQ 5.15.5   ActiveMQ安装http://activemq.apache.org/    下载对应文件解压后执行对应操作系统的activemq.bat   打开浏览器进入 http://localhost:8161/admin/ 看到内容就说明ActiveMQ服务已启动 (用户名&amp;amp;密码默认为admin）  spring">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-09-06T12:16:34.966Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我的博客">
+<meta name="twitter:title" content="springmvc配置activemq,完成对象传递DEMO(踩了好多坑！！)">
+<meta name="twitter:description" content="本机环境Win10Spring 4.3.12ActiveMQ 5.15.5   ActiveMQ安装http://activemq.apache.org/    下载对应文件解压后执行对应操作系统的activemq.bat   打开浏览器进入 http://localhost:8161/admin/ 看到内容就说明ActiveMQ服务已启动 (用户名&amp;amp;密码默认为admin）  spring">
   
     <link rel="alternate" href="/atom.xml" title="我的博客" type="application/atom+xml">
   
@@ -61,9 +65,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-springmvc配置activemq-踩了好多坑！！" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-springmvc配置activemq-踩了好多坑！！" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/09/06/springmvc配置activemq-踩了好多坑！！/" class="article-date">
   <time datetime="2018-09-06T11:40:38.000Z" itemprop="datePublished">2018-09-06</time>
@@ -76,8 +78,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/06/springmvc配置activemq-踩了好多坑！！/">springmvc配置activemq,完成对象传递DEMO(踩了好多坑！！)</a>
+    <h1 class="article-title" itemprop="name">
+      springmvc配置activemq,完成对象传递DEMO(踩了好多坑！！)
     </h1>
   
 
@@ -111,108 +113,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-备战秋招，找个靠谱的工作" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/22/备战秋招，找个靠谱的工作/" class="article-date">
-  <time datetime="2018-08-22T08:06:29.000Z" itemprop="datePublished">2018-08-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/22/备战秋招，找个靠谱的工作/">备战秋招，找个靠谱的工作</a>
-    </h1>
+    <a href="/2018/08/22/备战秋招，找个靠谱的工作/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">备战秋招，找个靠谱的工作</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="为什么要写博客呢？"><a href="#为什么要写博客呢？" class="headerlink" title="为什么要写博客呢？"></a>为什么要写博客呢？</h2><p>由于某些原因，错过了春招的实习生招聘，暑假期间赋闲在家。最近参加了一个内推面试(JAVA 开发岗)，感觉自己还图样，但也不算白跑一趟，也算帮助我认识到了自己技术能力上的不足。</p>
-<h2 id="面试中遇到的一些问题"><a href="#面试中遇到的一些问题" class="headerlink" title="面试中遇到的一些问题"></a>面试中遇到的一些问题</h2><p>Q:JAVA 的四种引用方式你了解吗？<br>A:balabala(死记硬背的)<br>Q:你刚才提到了软引用，那么软引用在哪些开发场景中使用呢，你用过吗？<br>A:额…不太了解。  </p>
-<p>Q:你能讲一下浏览器从输入网址到显示页面的过程吗?<br>A:balabala<br>Q:你刚才提到了TCP和HTTP，你能讲一下区别吗?<br>A:额。。一个在传输层，一个在应用层?  </p>
-<p>Q:你说你了解数据库的使用，你能讲一下聚簇索引和非聚簇索引的区别吗？<br>所以面试不是光靠死记硬背就能完事的，通过你的反应面试官也能基本了解你的水平。</p>
-<h2 id="大部分企业对后台开发岗的要求"><a href="#大部分企业对后台开发岗的要求" class="headerlink" title="大部分企业对后台开发岗的要求"></a>大部分企业对后台开发岗的要求</h2><ul>
-<li>熟悉基本算法和数据结构</li>
-<li>熟练使用/精通 至少一种开发语言</li>
-<li>了解数据库基本知识和性能调优</li>
-<li>了解至少一种脚本语言</li>
-</ul>
-<h2 id="给自己定点小目标"><a href="#给自己定点小目标" class="headerlink" title="给自己定点小目标"></a>给自己定点小目标</h2><ol>
-<li>找几本书或者博客，好好理一遍这些基本内容，不积跬步无以至千里</li>
-<li>找个开源ssm项目，自己动手实现一遍，实践是检验真理的唯一标准</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/22/备战秋招，找个靠谱的工作/" data-id="cjlqjdsuq0001zsteuguap0to" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Trifles/">Trifles</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/22/hello-world/" class="article-date">
-  <time datetime="2018-08-22T07:43:02.376Z" itemprop="datePublished">2018-08-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/22/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/22/hello-world/" data-id="cjlqjdsuw0003zste4qgw5dde" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
 
 </section>
         
