@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Java多线程顺序打印abc | YZY的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java多线程顺序打印abc问题描述：有三个线程顺序打印abc十次，请用线程同步实现。 问题分析：这个问题是一个线程同步的问题，一共打印十轮每一轮都要保证a，b，c三个线程顺序执行。本文给出以下几个常用方法。 CAS实现12345678910111213141516171819202122232425262728293031323334353637383940414243444546package">
+<meta name="keywords" content="Coding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java多线程顺序打印abc">
+<meta property="og:url" content="http://yoursite.com/2018/09/10/Java多线程顺序打印abc/index.html">
+<meta property="og:site_name" content="YZY的博客">
+<meta property="og:description" content="Java多线程顺序打印abc问题描述：有三个线程顺序打印abc十次，请用线程同步实现。 问题分析：这个问题是一个线程同步的问题，一共打印十轮每一轮都要保证a，b，c三个线程顺序执行。本文给出以下几个常用方法。 CAS实现12345678910111213141516171819202122232425262728293031323334353637383940414243444546package">
+<meta property="og:locale" content="简体中文">
+<meta property="og:updated_time" content="2018-09-10T01:15:29.226Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java多线程顺序打印abc">
+<meta name="twitter:description" content="Java多线程顺序打印abc问题描述：有三个线程顺序打印abc十次，请用线程同步实现。 问题分析：这个问题是一个线程同步的问题，一共打印十轮每一轮都要保证a，b，c三个线程顺序执行。本文给出以下几个常用方法。 CAS实现12345678910111213141516171819202122232425262728293031323334353637383940414243444546package">
+  
+    <link rel="alternate" href="/atom.xml" title="YZY的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">YZY的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java多线程顺序打印abc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/10/Java多线程顺序打印abc/" class="article-date">
+  <time datetime="2018-09-10T01:14:41.000Z" itemprop="datePublished">2018-09-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java多线程顺序打印abc
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Java多线程顺序打印abc"><a href="#Java多线程顺序打印abc" class="headerlink" title="Java多线程顺序打印abc"></a>Java多线程顺序打印abc</h1><h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>有三个线程顺序打印abc十次，请用线程同步实现。</p>
+<h3 id="问题分析："><a href="#问题分析：" class="headerlink" title="问题分析："></a>问题分析：</h3><p>这个问题是一个线程同步的问题，一共打印十轮每一轮都要保证a，b，c三个线程顺序执行。本文给出以下几个常用方法。</p>
+<h4 id="CAS实现"><a href="#CAS实现" class="headerlink" title="CAS实现"></a>CAS实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">package com.shu.yzy.thread;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line">import java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 三个线程按次序轮流打印a,b,c AtomicInteger 实现</span><br><span class="line"> * @author yzy</span><br><span class="line"> */</span><br><span class="line">public class ThreadDemo implements Runnable&#123;</span><br><span class="line">    private static  AtomicInteger currentCount = new AtomicInteger(0);</span><br><span class="line">    </span><br><span class="line">    private static final Integer MAX_COUNT = 30;</span><br><span class="line"></span><br><span class="line">    private static String [] chars = &#123;&quot;a&quot;, &quot;b&quot;, &quot;c&quot;&#125;;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    public ThreadDemo(String name) &#123;</span><br><span class="line">        this.name =  name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        while(currentCount.get()&lt;MAX_COUNT)&#123;</span><br><span class="line">            if(this.name.equals(chars[currentCount.get()%3]))&#123;</span><br><span class="line">                printAndPlusOne(this.name + &quot;\t&quot; + currentCount);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void printAndPlusOne(String content)&#123;</span><br><span class="line">        System.out.println(content);</span><br><span class="line">        currentCount.getAndIncrement();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String [] args)&#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 3, 20, TimeUnit.MINUTES, new LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo(&quot;a&quot;));</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo(&quot;b&quot;));</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo(&quot;c&quot;));</span><br><span class="line">        threadPoolExecutor.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="synchronized实现"><a href="#synchronized实现" class="headerlink" title="synchronized实现"></a>synchronized实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">package com.shu.yzy.thread;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 三个线程按次序轮流打印a,b,c synchronized + wait() + notifyAll() 实现</span><br><span class="line"> * Integer 对象不能作为synchronized锁的对象，因为修改Integer对象的值会改变对象引用</span><br><span class="line"> * @author yzy</span><br><span class="line"> */</span><br><span class="line">public class ThreadDemo2 implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">    private static String[] chars = &#123;&quot;a&quot;, &quot;b&quot;, &quot;c&quot;&#125;;</span><br><span class="line"></span><br><span class="line">    private static final OperateInteger operateInteger = new OperateInteger(0, 30);</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    public ThreadDemo2(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        while (operateInteger.getCurrentCount() &lt; operateInteger.getMaxCount()) &#123;</span><br><span class="line">            synchronized (operateInteger) &#123;</span><br><span class="line">                if (operateInteger.getCurrentCount() &lt; operateInteger.getMaxCount()) &#123;</span><br><span class="line">                    if (this.name.equals(chars[operateInteger.getCurrentCount() % 3])) &#123;</span><br><span class="line">                        operateInteger.printAndPlusOne();</span><br><span class="line">                        operateInteger.notifyAll();</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        try &#123;</span><br><span class="line">                            operateInteger.wait();</span><br><span class="line">                        &#125; catch (Exception e1) &#123;</span><br><span class="line">                            e1.printStackTrace();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 3, 20, TimeUnit.MINUTES, new LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo2(&quot;a&quot;));</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo2(&quot;b&quot;));</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo2(&quot;c&quot;));</span><br><span class="line">        threadPoolExecutor.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class OperateInteger&#123;</span><br><span class="line">        private int currentCount;</span><br><span class="line"></span><br><span class="line">        private int maxCount;</span><br><span class="line"></span><br><span class="line">        private void printAndPlusOne() &#123;</span><br><span class="line">            System.out.println(chars[currentCount%3] + &quot;\t&quot; + currentCount);</span><br><span class="line">            currentCount++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public OperateInteger(int currentCount, int maxCount) &#123;</span><br><span class="line">            this.currentCount = currentCount;</span><br><span class="line">            this.maxCount = maxCount;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public int getCurrentCount() &#123;</span><br><span class="line">            return currentCount;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public int getMaxCount() &#123;</span><br><span class="line">            return maxCount;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Lock实现"><a href="#Lock实现" class="headerlink" title="Lock实现"></a>Lock实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">package com.shu.yzy.thread;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line">import java.util.concurrent.locks.Condition;</span><br><span class="line">import java.util.concurrent.locks.Lock;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 三个线程按次序轮流打印a,b,c Lock实现</span><br><span class="line"> * @author yzy</span><br><span class="line"> */</span><br><span class="line">public class ThreadDemo3 implements Runnable&#123;</span><br><span class="line">    private static Lock lock = new ReentrantLock();</span><br><span class="line"></span><br><span class="line">    private static Integer currentCount = 0;</span><br><span class="line"></span><br><span class="line">    private static final Integer MAX_COUNT = 30;</span><br><span class="line"></span><br><span class="line">    private static String [] chars = &#123;&quot;a&quot;, &quot;b&quot;, &quot;c&quot;&#125;;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    public ThreadDemo3(String name) &#123;</span><br><span class="line">        this.name =  name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        while(currentCount&lt;MAX_COUNT)&#123;</span><br><span class="line">            //lock() 与 unlock() 必须和 try...finally 配套使用 避免出现异常不解锁</span><br><span class="line">            try&#123;</span><br><span class="line">                lock.lock();</span><br><span class="line">                while(this.name.equals(chars[currentCount%3])&amp;&amp;currentCount&lt;MAX_COUNT)&#123;</span><br><span class="line">                    printAndPlusOne(this.name);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;catch (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;finally &#123;</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void printAndPlusOne(String name)&#123;</span><br><span class="line">        System.out.println(name + &quot;\t&quot; + currentCount);</span><br><span class="line">        currentCount ++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String [] args)&#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 3, 20, TimeUnit.MINUTES, new LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo3(&quot;a&quot;));</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo3(&quot;b&quot;));</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo3(&quot;c&quot;));</span><br><span class="line">        threadPoolExecutor.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="JUC-包同步工具实现-以CylicBarrier为例"><a href="#JUC-包同步工具实现-以CylicBarrier为例" class="headerlink" title="JUC 包同步工具实现(以CylicBarrier为例)"></a>JUC 包同步工具实现(以CylicBarrier为例)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">package com.shu.yzy.thread;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.CyclicBarrier;</span><br><span class="line">import java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class ThreadDemo4 implements Runnable&#123;</span><br><span class="line">    private static CyclicBarrier cyclicBarrier = new CyclicBarrier(3);</span><br><span class="line"></span><br><span class="line">    private static Integer currentCount = 0;</span><br><span class="line"></span><br><span class="line">    private static final Integer MAX_COUNT = 30;</span><br><span class="line"></span><br><span class="line">    private static String [] chars = &#123;&quot;a&quot;, &quot;b&quot;, &quot;c&quot;&#125;;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    public ThreadDemo4(String name) &#123;</span><br><span class="line">        this.name =  name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        while(currentCount&lt;MAX_COUNT)&#123;</span><br><span class="line">            while(this.name.equals(chars[currentCount%3]))</span><br><span class="line">                printAndPlusOne(this.name + &quot;\t&quot; + currentCount);</span><br><span class="line">            try &#123;</span><br><span class="line">                cyclicBarrier.await();</span><br><span class="line">            &#125;catch (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void printAndPlusOne(String name)&#123;</span><br><span class="line">        System.out.println(name);</span><br><span class="line">        currentCount ++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String [] args)&#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 3, 20, TimeUnit.MINUTES, new LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo4(&quot;a&quot;));</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo4(&quot;b&quot;));</span><br><span class="line">        threadPoolExecutor.execute(new ThreadDemo4(&quot;c&quot;));</span><br><span class="line">        threadPoolExecutor.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/10/Java多线程顺序打印abc/" data-id="cjlvlil970000kktef05x52ts" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Coding/">Coding</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/09/06/springmvc配置activemq-踩了好多坑！！/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">springmvc配置activemq,完成对象传递DEMO(踩了好多坑！！)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trifles/">Trifles</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 20px;">Coding</a> <a href="/tags/Trifles/" style="font-size: 10px;">Trifles</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/09/10/Java多线程顺序打印abc/">Java多线程顺序打印abc</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/06/springmvc配置activemq-踩了好多坑！！/">springmvc配置activemq,完成对象传递DEMO(踩了好多坑！！)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/22/备战秋招，找个靠谱的工作/">备战秋招，找个靠谱的工作</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/22/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 yzy<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
